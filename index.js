@@ -44,6 +44,7 @@ async function run() {
         const CollegeCollection = client.db("K-EduNest").collection('Colleges')
         const AdmissionCollection = client.db("K-EduNest").collection('Admission')
         const ReviewsCollection = client.db("K-EduNest").collection('Reviews')
+        const UserCollection = client.db("K-EduNest").collection('Users')
 
 
         // ----------------------------------------------------------------------------------------
@@ -120,34 +121,60 @@ async function run() {
 
 
 
-
-
-
         // ----------------------------------------------------------------------------------------
         //------Users---------
         // ----------------------------------------------------------------------------------------
 
         // -----------get all user---------------------------------
-        // app.get("/Users", async (req, res) => {
-        //     const result = await UserCollection.find().toArray();
-        //     res.send(result)
-        // })
+        app.get("/users", async (req, res) => {
+            const result = await UserCollection.find().toArray();
+            res.send(result)
+        })
 
-        //---------------------------------add users-------------------
-        // app.post('/Users', async (req, res) => {
-        //     const user = req.body
-        //     const query = { email: user.email }
-        //     const exist = await UserCollection.findOne(query)
+        // ---------------------------------add users-------------------
+        app.post('/users', async (req, res) => {
+            const user = req.body
+            const query = { email: user.email }
+            const exist = await UserCollection.findOne(query)
 
-        //     if (exist) {
-        //         return res.send({ massage: 'User Already exist', insertedId: null })
-        //     }
+            if (exist) {
+                return res.send({ massage: 'User Already exist', insertedId: null })
+            }
 
-        //     const result = await UserCollection.insertOne(user)
-        //     res.send(result)
-        // })
+            const result = await UserCollection.insertOne(user)
+            res.send(result)
+        })
 
         // --------------------- update isSubscribed------------
+
+        app.put('/Users/:id', async (req, res) => {
+            const { id } = req.params;
+            const updatedData = req.body;
+
+            try {
+                if (!ObjectId.isValid(id)) {
+                    return res.status(400).send({ error: 'Invalid user ID' });
+                }
+
+                const result = await UserCollection.updateOne(
+                    { _id: new ObjectId(id) },
+                    { $set: updatedData }
+                );
+
+                if (result.matchedCount === 0) {
+                    return res.status(404).send({ error: 'User not found' });
+                }
+
+                res.send({ success: true });
+            } catch (err) {
+                console.error('Update user error:', err);
+                res.status(500).send({ error: 'Internal server error' });
+            }
+        });
+
+
+
+
         // app.patch("/Users/:id", async (req, res) => {
         //     const userId = req.params.id;
         //     const { isSubscribed } = req.body;
