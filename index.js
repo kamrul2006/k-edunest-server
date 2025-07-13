@@ -15,6 +15,8 @@ app.use(cors(
     {
         origin: ['http://localhost:3000',
             'http://localhost:3000',
+            'https://kedunest.vercel.app',
+            'https://kedunest-kamrul-islam-apurbas-projects.vercel.app'
         ],
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization'],
@@ -149,31 +151,30 @@ async function run() {
 
         // --------------------- update isSubscribed------------
 
-        app.put('/Users/:id', async (req, res) => {
-            const { id } = req.params;
-            const updatedData = req.body;
+        // app.put('/Users/:id', async (req, res) => {
+        //     const { id } = req.params;
+        //     const updatedData = req.body;
 
-            try {
-                if (!ObjectId.isValid(id)) {
-                    return res.status(400).send({ error: 'Invalid user ID' });
-                }
+        //     try {
+        //         if (!ObjectId.isValid(id)) {
+        //             return res.status(400).send({ error: 'Invalid user ID' });
+        //         }
 
-                const result = await UserCollection.updateOne(
-                    { _id: new ObjectId(id) },
-                    { $set: updatedData }
-                );
+        //         const result = await UserCollection.updateOne(
+        //             { _id: new ObjectId(id) },
+        //             { $set: updatedData }
+        //         );
 
-                if (result.matchedCount === 0) {
-                    return res.status(404).send({ error: 'User not found' });
-                }
+        //         if (result.matchedCount === 0) {
+        //             return res.status(404).send({ error: 'User not found' });
+        //         }
 
-                res.send({ success: true });
-            } catch (err) {
-                console.error('Update user error:', err);
-                res.status(500).send({ error: 'Internal server error' });
-            }
-        });
-
+        //         res.send({ success: true });
+        //     } catch (err) {
+        //         console.error('Update user error:', err);
+        //         res.status(500).send({ error: 'Internal server error' });
+        //     }
+        // });
 
 
 
