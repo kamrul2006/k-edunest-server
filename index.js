@@ -68,28 +68,28 @@ async function run() {
 
 
 
-        //----------add College--------
-        app.post('/College', async (req, res) => {
-            const review = req.body
-            const result = await CollegeCollection.insertOne(review)
-            res.send(result)
-        })
+        // //----------add College--------
+        // app.post('/College', async (req, res) => {
+        //     const review = req.body
+        //     const result = await CollegeCollection.insertOne(review)
+        //     res.send(result)
+        // })
 
-        //---------- DELETE Colleges by id----------------
-        app.delete("/College/:id", async (req, res) => {
-            const { id } = req.params;
-            try {
-                const result = await CollegeCollection.deleteOne({ _id: new ObjectId(id) });
-                if (result.deletedCount === 1) {
-                    res.status(200).json({ message: "College deleted successfully." });
-                } else {
-                    res.status(404).json({ message: "College not found." });
-                }
-            } catch (err) {
-                console.error("Delete Error:", err);
-                res.status(500).json({ message: "Server error." });
-            }
-        });
+        // //---------- DELETE Colleges by id----------------
+        // app.delete("/College/:id", async (req, res) => {
+        //     const { id } = req.params;
+        //     try {
+        //         const result = await CollegeCollection.deleteOne({ _id: new ObjectId(id) });
+        //         if (result.deletedCount === 1) {
+        //             res.status(200).json({ message: "College deleted successfully." });
+        //         } else {
+        //             res.status(404).json({ message: "College not found." });
+        //         }
+        //     } catch (err) {
+        //         console.error("Delete Error:", err);
+        //         res.status(500).json({ message: "Server error." });
+        //     }
+        // });
 
 
         // ---------------------------------------------------------
@@ -113,6 +113,8 @@ async function run() {
             }
         });
 
+
+        // ---------get details-----------------
 
         app.get('/admissions', async (req, res) => {
             const result = await AdmissionCollection.find().toArray();
